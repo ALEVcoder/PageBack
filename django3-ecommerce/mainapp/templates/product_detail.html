@@ -1,0 +1,342 @@
+{% load specifications %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sHOP</title>
+
+  <!-- CSS only -->
+
+
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+  <link rel="stylesheet" href="path/to/line-awesome/css/line-awesome-font-awesome.min.css">
+
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+
+  <style>
+    .user-wrapper a {
+      text-decoration: none;
+      color: #DD2F6E;
+    }
+
+    .user-wrapper i {
+      font-size: 40px;
+      display: inline-block;
+    }
+    .table{
+      border-collapse: collapse;
+    position: relative;
+    top: 20px;
+    left: 20%;
+    width: 60%;
+    height: 100%;
+    }
+    .table tr{
+      width: 100%;
+      background-color: #f5e3e9;
+      font-size: 50px;
+    }
+    .table tr td{
+      font-size: 1.7rem;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <input type="checkbox" name="" id="nav-toggle">
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <a href="{% url 'base' %}">
+        <h2><span class="lab la-accusoft"></span> <span>ALEVcoder</span> </h2>
+      </a>
+    </div>
+
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="{% url 'base' %}" class="active"><span class="las la-igloo"></span><span>Dashboard</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-users"></span><span>Customers</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-clipboard-list"></span><span>Projects</span></a>
+        </li>
+        <li>
+          <a href="{% url 'cart' %}"><span class="las la-shopping-bag"></span><span>Orders</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-receipt"></span><span>Inventory</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-user-circle"></span><span>Accounts</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-clipboard-list"></span><span>Tasks</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h2>
+        <label for="nav-toggle">
+          <span class="las la-bars"></span>
+        </label>
+        Dashboard
+      </h2>
+
+      <div class="search-wrapper">
+        <span class="las la-search"></span>
+        <input type="search" placeholder="Qidiring...">
+      </div>
+
+      <div class="user-wrapper">
+        <a href="{% url 'cart' %}">
+          <i class="las la-cart-arrow-down" width="40px" height="40px"></i>
+          <small>( {{ cart.products.count }} )</small>
+          <div>
+            <h4>Savatchangiz</h4>
+          </div>
+        </a>
+      </div>
+    </header>
+
+
+    <main>
+      <div class="cards">
+        {% for category in categories %}
+        <div class="card-single">
+          <div>
+            <h1>{{ category.count }}</h1>
+            <span>{{ category.name }}</span>
+          </div>
+          <div>
+            <span class="las la-users"></span>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="card-single">
+          <div>
+            <h1>$6k</h1>
+            <span>Income</span>
+          </div>
+          <div>
+            <span class="las la-google-wallet"></span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+
+      {% block content %}
+      <!-- <nav aria-label="breadcrumb" class="mt-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'base' %}">Главная</a></li>
+        <li class="breadcrumb-item"><a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ product.title }}</li>
+      </ol>
+    </nav> -->
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{ product.image.url }}" class="img-fluid"
+            style="display: inline-block; width: 300px; height: 300px;">
+        </div>
+        <div class="col-md-8">
+          <h3 style="display: inline-block;
+        position: relative;
+        top: -281px;
+        left: 390px;
+        font-size: 3rem;
+        color:#DD2F6E;">{{ product.title }}</h3>
+
+
+          <p style="display: inline-block;
+        position: relative;
+        top: -235px;
+        left: 147px;
+        font-size: 2rem;
+        color: #DD2F6E;">Narxi: <span style="font-weight: 900; font-size: 2.6rem;">{{ product.price }} $.</span></p>
+
+
+          <p style="display: inline-block;
+    position: relative;
+    top: -170px;
+    left: -127px;
+    font-size: 2rem;
+    color: #DD2F6E;
+">Tavsif: <span style="font-weight: 900; font-size: 1.6rem; letter-spacing: 5px;">{{ product.description }}</span></p>
+          <hr>
+          <a href="{% url 'add_to_cart' ct_model=ct_model slug=product.slug %}"><button class="btn btn-danger" style="position: relative;
+          top: -93px;
+          left: 390px;
+          background-color: var(--main-color);
+          border-radius: 17px;
+          color: #fff;
+          font-size: 1rem;
+          padding: .8rem 1.2rem;
+          font-weight: bold;
+          cursor: pointer;
+          border: 1px solid var(--main-color);">Savatga qo'shish</button></a>
+        </div>
+        <p style="position: relative; top:10px; left:300px; font-size:2rem; font-weight: bold;">Xususiyatlari:</p>
+
+        {{ product|product_spec }}
+
+      </div>
+
+      {% endblock content %}
+
+      <div class="recent-grid">
+        <div class="projects">
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Projects</h3>
+
+              <button>
+                Barchasini ko`rish
+                <span class="las la-arrow-right"></span>
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table width='100%'>
+                  <thead>
+                    <tr>
+                      <td>Project Title</td>
+                      <td>Department</td>
+                      <td>Status</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>UI/UX Design</td>
+                      <td>Web developement</td>
+                      <td>
+                        <span class="status purple"></span>
+                        review
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Web development</td>
+                      <td>Front-end</td>
+                      <td>
+                        <span class="status pink"></span>
+                        in progres
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Ushop app</td>
+                      <td>Mobile Team</td>
+                      <td>
+                        <span class="status orange"></span>
+                        pending
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="customers">
+          <div class="card">
+            <div class="card-header">
+              <h3>New Customer</h3>
+
+              <button>
+                Barchasini ko`rish
+                <span class="las la-arrow-right"></span>
+              </button>
+            </div>
+
+            <div class="card-body">
+              <div class="customer">
+                <div class="info">
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div class="contact">
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

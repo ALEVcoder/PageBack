@@ -1,0 +1,441 @@
+{% extends 'index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sHOP</title>
+
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css">
+  <link rel="stylesheet"
+    href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+
+  <link rel="stylesheet" href="path/to/line-awesome/css/line-awesome-font-awesome.min.css">
+
+  <link rel="stylesheet" href="{% static 'main.css' %}">
+
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+  <style>
+    .user-wrapper a {
+      text-decoration: none;
+      color: #DD2F6E;
+    }
+
+    .user-wrapper i {
+      font-size: 40px;
+      display: inline-block;
+    }
+
+    .user-wrapper {
+      background-color: var(--main-color);
+      border-radius: 10px;
+      color: #fff;
+      font-size: .8rem;
+      padding: .5rem 1rem;
+      border: 1px solid var(--main-color);
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <input type="checkbox" name="" id="nav-toggle">
+
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <a href="{% url 'base' %}">
+        <h2><span class="lab la-accusoft"></span> <span>ALEVcoder</span> </h2>
+      </a>
+    </div>
+
+    <div class="sidebar-menu">
+      <ul>
+        <li>
+          <a href="{% url 'base' %}" class="active"><span class="las la-igloo"></span><span>Dashboard</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-users"></span><span>Customers</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-clipboard-list"></span><span>Projects</span></a>
+        </li>
+        <li>
+          <a href="{% url 'cart' %}"><span class="las la-shopping-bag"></span><span>Orders</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-receipt"></span><span>Inventory</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-user-circle"></span><span>Accounts</span></a>
+        </li>
+        <li>
+          <a href="#"><span class="las la-clipboard-list"></span><span>Tasks</span></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <header>
+      <h2>
+        <label for="nav-toggle">
+          <span class="las la-bars"></span>
+        </label>
+        Dashboard
+      </h2>
+
+      <div class="search-wrapper">
+        <span class="las la-search"></span>
+        <input type="search" placeholder="Qidiring...">
+      </div>
+
+      <div class="user-wrapper">
+        <a href="{% url 'cart' %}">
+          <i class="las la-cart-arrow-down" width="40px" height="40px"></i>
+          <small>( {{ cart.products.count }} )</small>
+          <div>
+            <h4>Savatchangiz</h4>
+          </div>
+        </a>
+      </div>
+    </header>
+
+
+    <main>
+      <div class="cards">
+        {% for category in categories %}
+        <div class="card-single">
+          <div>
+            <h1>{{ category.count }}</h1>
+            <span>{{ category.name }}</span>
+          </div>
+          <div>
+            <span class="las la-users"></span>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="card-single">
+          <div>
+            <h1>$6k</h1>
+            <span>Income</span>
+          </div>
+          <div>
+            <span class="las la-google-wallet"></span>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+
+      {% block content %}
+      <h3 style="font-size: 30px; text-align:center; margin:10px; ">Sizning savatingiz {% if not cart.products.count %} bo`sh {% endif %}</h3>
+      {% if messages %}
+      {% for message in messages %}
+      <div style="font-size: 17px; text-align:center; margin:10px; color: rgb(119, 224, 20);"
+        class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button> -->
+      </div>
+      {% endfor %}
+      {% endif %}
+      {% if cart.products.count %}
+      <!-- <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Rasm</th>
+            <th scope="col">Narx</th>
+            <th scope="col">Miqdor</th>
+            <th scope="col">Umumiy narx</th>
+            <th scope="col">Harakat</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart.products.all %}
+          <tr>
+            <th scope="row">{{ item.content_object.title }}</th>
+            <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
+            <td>{{ item.content_object.price }} $.</td>
+            <td>
+              <form
+                action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
+                method="POST">
+                {% csrf_token %}
+                <input type="number" class="form-control" name="qty" style="width: 70px;" min="1"
+                  value="{{ item.qty }}">
+                <br>
+                <input type="submit" class="tugma" value="Miqdorni o'zgartirish">
+              </form>
+            </td>
+            <td>{{ item.final_price }} $.</td>
+            <td>
+              <a
+                href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button
+                  class="tugma">Savatdan olib tashlang</button></a>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
+            <td colspan="2"></td>
+            <td>Jami:</td>
+            <td>{{ cart.total_products }}ta</td>
+            <td><strong>{{ cart.final_price }} $.</strong></td>
+            <td><a href="{% url 'checkout' %}"><button class="tugma">Kassaga boring</button></a></td>
+          </tr>
+        </tbody>
+      </table> -->
+
+      <div class="xarid">
+
+        {% for item in cart.products.all %}
+        <div class="card">
+          <img src="{{ item.content_object.image.url }}" style="display: inline-block; margin-left:50px; width:360px">
+          <p style="display: inline-block;
+              font-size: 3rem;
+              position: relative;
+              top: -290px;
+              font-weight: 900;
+              left: 120px;">
+            Nomi: {{ item.content_object.title }}
+          </p>
+
+          <p style="position: relative;
+          top: -252px;
+          left: 539px;
+          font-size: 1.5rem;
+          font-weight: 400;">
+            Narxi: <span style="font-weight: 900; font-size: 2.6rem;">{{ item.content_object.price }} $.</span>
+          </p>
+          <p style="position: relative;
+          top: -200px;
+          left: 538px;
+          color: gray;
+          font-size:1.2rem;">
+            Sizga qancha kerak?
+          </p>
+          <div class="miqdor" style="display: inline-block; position: relative; top: -180px; left:538px">
+            <form
+              action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
+              method="POST">
+              {% csrf_token %}
+
+              <input type="number" class="form-control" name="qty" style="width: 146px;
+                border-radius: 19px;
+                padding: 13px 50px;
+                outline: none;
+                font-size: 20px;" min="1" value="{{ item.qty }}"> ta
+              <br>
+              <input type="submit" style="background-color: #DD2F6E;
+              border-radius: 25px;
+              color: #fff;
+              font-size: 1rem;
+              padding: 1.5rem 2rem;
+              border: 1px solid #DD2F6E;
+              font-weight: 500;
+              margin-top: 10px;" value="Miqdorni o'zgartirish">
+            </form>
+          </div>
+          <p style="display: inline-block;
+          position: relative;
+          top: -246px;
+          left: 555px;
+          font-size: 1.5rem;">
+            Umumiy Narx: <span style="font-weight: 900; font-size: 2.6rem;">{{ item.final_price }} $.</span></p>
+          <a
+            href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button
+              style="background-color: #DD2F6E;
+            border-radius: 25px;
+            color: #fff;
+            font-size: 2rem;
+            padding: 0.5rem 1rem;
+            border: 1px solid #DD2F6E;
+            font-weight: 500;
+            position: relative;
+            top: -452px; cursor: pointer;
+            left: 520px;">X</button></a>
+        </div>
+        {% endfor %}
+
+        <p style="display: inline-block; position: relative;
+        top: 20px; font-size:1.5rem; text-align:center;
+        left: 520px;">Jami: {{ cart.total_products }}ta</p>
+        <p style="display: inline-block; position: relative;
+        top: 20px; font-size:1.5rem; text-align:center;
+        left: 550px;">Umumiy narxi: {{ cart.final_price }} $.</p>
+        <a href="{% url 'checkout' %}">
+          <button style="background-color: #DD2F6E;
+          border-radius: 25px;
+          color: #fff;
+          font-size: 2rem;
+          padding: 0.8rem 1.5rem;
+          border: 1px solid #DD2F6E;
+          font-weight: 500; display: inline-block; position: relative;
+          top: 66px; font-size:1.5rem; text-align:center; cursor: pointer;
+          left: 266px;">Kassaga boring</button></a>
+
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+
+      </div>
+
+      {% endif %}
+      {% endblock content %}
+
+
+
+
+
+
+      <div class="recent-grid">
+        <div class="projects">
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Projects</h3>
+
+              <button>
+                Barchasini ko`rish
+                <span class="las la-arrow-right"></span>
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table width='100%'>
+                  <thead>
+                    <tr>
+                      <td>Project Title</td>
+                      <td>Department</td>
+                      <td>Status</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>UI/UX Design</td>
+                      <td>Web developement</td>
+                      <td>
+                        <span class="status purple"></span>
+                        review
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Web development</td>
+                      <td>Front-end</td>
+                      <td>
+                        <span class="status pink"></span>
+                        in progres
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Ushop app</td>
+                      <td>Mobile Team</td>
+                      <td>
+                        <span class="status orange"></span>
+                        pending
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="customers">
+          <div class="card">
+            <div class="card-header">
+              <h3>New Customer</h3>
+
+              <button>
+                Barchasini ko`rish
+                <span class="las la-arrow-right"></span>
+              </button>
+            </div>
+
+            <div class="card-body">
+              <div class="customer">
+                <div class="info">
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div class="contact">
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+              <div class="customer">
+                <div>
+                  <img src="" alt="image none" width="40px" height="40px">
+                  <div>
+                    <h4>Samarkand</h4>
+                    <small>Ce Exteejnfio</small>
+                  </div>
+                </div>
+                <div>
+                  <span class="las la-user-circle"></span>
+                  <span class="las la-comment"></span>
+                  <span class="las la-phone"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
