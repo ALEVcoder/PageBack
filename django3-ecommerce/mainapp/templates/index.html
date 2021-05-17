@@ -13,12 +13,10 @@
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/font-awesome-line-awesome/css/all.min.css">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-
     <link rel="stylesheet" href="path/to/line-awesome/css/line-awesome-font-awesome.min.css">
 
     <link rel="stylesheet" href="{% static 'main.css' %}">
-
-    
+    <link rel="stylesheet" href="{% static 'bootstrap-5.0.1-dist\css\bootstrap.min.css' %}">
 
     <style>
         .user-wrapper a{
@@ -40,33 +38,26 @@
     <div class="sidebar">
         <div class="sidebar-brand">
             <a href="{% url 'base' %}">
-                <h2><span class="lab la-accusoft"></span> <span>ALEVcoder</span> </h2>
+                <h2><span class="lab la-accusoft"></span> <span>OnlineMarket</span> </h2>
             </a>
         </div>
 
         <div class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="{% url 'base' %}" class="active"><span class="las la-igloo"></span><span>Dashboard</span></a>
+                    <a href="{% url 'base' %}" class="active"><span class="las la-home"></span><span>Bosh qism</span></a>
                 </li>
-                <li>
-                    <a href="#"><span class="las la-users"></span><span>Customers</span></a>
-                </li>
-                <li>
-                    <a href="#"><span class="las la-clipboard-list"></span><span>Projects</span></a>
-                </li>
+                
                 <li>
                     <a href="{% url 'cart' %}"><span class="las la-cart-arrow-down"></span><span>Savatcha</span></a>
                 </li>
                 <li>
-                    <a href="#"><span class="las la-receipt"></span><span>Inventory</span></a>
+                    <a href="{% url 'checkout' %}"><span class="las la-store"></span><span>Xarid</span></a>
                 </li>
                 <li>
-                    <a href="#"><span class="las la-user-circle"></span><span>Accounts</span></a>
+                    <a href="{% url 'checkout' %}"><span class="las la-address-card"></span><span>Biz haqimizda</span></a>
                 </li>
-                <li>
-                    <a href="#"><span class="las la-clipboard-list"></span><span>Tasks</span></a>
-                </li>
+                
             </ul>
         </div>
     </div>
@@ -77,7 +68,7 @@
                 <label for="nav-toggle">
                     <span class="las la-bars"></span>
                 </label>
-                Dashboard
+                OnlineMarket
             </h2>
 
             <div class="search-wrapper">
@@ -106,18 +97,20 @@
                         <span>{{ category.name }}</span>
                     </div>
                     <div>
-                        <span class="las la-users"></span>
+                        
+                        <span class="las la-sliders-h"></span>
                     </div>
                 </div>
                 {% endfor %}
 
                 <div class="card-single">
                     <div>
-                        <h1>$6k</h1>
-                        <span>Income</span>
+                        <h1>0k</h1>
+                        <span>Yetkazib berish</span>
                     </div>
                     <div>
-                        <span class="las la-google-wallet"></span>
+                        <!-- <i class="las la-truck-loading"></i> -->
+                        <span class="las la-truck"></span>
                     </div>
                 </div>
             </div>
@@ -140,7 +133,7 @@
 
             <div class="row">
                 {% for product in products %}
-                <div class="col-lg-4 col-md-6 mb-4" style="display: inline-block;">
+                <div class="col-lg-3 mb-4" style="display: inline-block;">
                     <div class="card h-100">
                         <a href="{{ product.get_absolute_url }}"><img class="card-img-top" src="{{ product.image.url }}"
                                 alt="" width="300px" height="300px"></a>
@@ -242,7 +235,7 @@
                         <div class="card-body">
                             <div class="customer">
                                 <div class="info">
-                                    <img src="" alt="image none" width="40px" height="40px">
+                                    <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="image none" width="40px" height="40px">
                                     <div>
                                         <h4>Samarkand</h4>
                                         <small>Ce Exteejnfio</small>
@@ -256,7 +249,7 @@
                             </div>
                             <div class="customer">
                                 <div>
-                                    <img src="" alt="image none" width="40px" height="40px">
+                                    <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="image none" width="40px" height="40px">
                                     <div>
                                         <h4>Samarkand</h4>
                                         <small>Ce Exteejnfio</small>
@@ -270,7 +263,7 @@
                             </div>
                             <div class="customer">
                                 <div>
-                                    <img src="" alt="image none" width="40px" height="40px">
+                                    <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="image none" width="40px" height="40px">
                                     <div>
                                         <h4>Samarkand</h4>
                                         <small>Ce Exteejnfio</small>
@@ -284,7 +277,7 @@
                             </div>
                             <div class="customer">
                                 <div>
-                                    <img src="" alt="image none" width="40px" height="40px">
+                                    <img src="https://icons-for-free.com/iconfiles/png/512/business+costume+male+man+office+user+icon-1320196264882354682.png" alt="image none" width="40px" height="40px">
                                     <div>
                                         <h4>Samarkand</h4>
                                         <small>Ce Exteejnfio</small>

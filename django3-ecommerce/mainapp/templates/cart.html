@@ -23,6 +23,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
   <style>
     .user-wrapper a {
       text-decoration: none;
@@ -57,7 +60,32 @@
       </a>
     </div>
 
-    <div class="sidebar-menu">
+    <div class="sidebar">
+      <div class="sidebar-brand">
+          <a href="{% url 'base' %}">
+              <h2><span class="lab la-accusoft"></span> <span>OnlineMarket</span> </h2>
+          </a>
+      </div>
+
+      <div class="sidebar-menu">
+          <ul>
+              <li>
+                  <a href="{% url 'base' %}" class="active"><span class="las la-home"></span><span>Bosh qism</span></a>
+              </li>
+              
+              <li>
+                  <a href="{% url 'cart' %}"><span class="las la-cart-arrow-down"></span><span>Savatcha</span></a>
+              </li>
+              <li>
+                  <a href="{% url 'checkout' %}"><span class="las la-store"></span><span>Xarid</span></a>
+              </li>
+              <li>
+                  <a href="{% url 'checkout' %}"><span class="las la-address-card"></span><span>Biz haqimizda</span></a>
+              </li>
+              
+          </ul>
+      </div>
+  </div><div class="sidebar-menu">
       <ul>
         <li>
           <a href="{% url 'base' %}" class="active"><span class="las la-igloo"></span><span>Dashboard</span></a>
@@ -87,59 +115,62 @@
   <div class="main-content">
     <header>
       <h2>
-        <label for="nav-toggle">
-          <span class="las la-bars"></span>
-        </label>
-        Dashboard
+          <label for="nav-toggle">
+              <span class="las la-bars"></span>
+          </label>
+          OnlineMarket
       </h2>
 
       <div class="search-wrapper">
-        <span class="las la-search"></span>
-        <input type="search" placeholder="Qidiring...">
+          <span class="las la-search"></span>
+          <input type="search" placeholder="Qidiring...">
       </div>
 
       <div class="user-wrapper">
-        <a href="{% url 'cart' %}">
-          <i class="las la-cart-arrow-down" width="40px" height="40px"></i>
-          <small>( {{ cart.products.count }} )</small>
-          <div>
-            <h4>Savatchangiz</h4>
-          </div>
-        </a>
+          <a href="{% url 'cart' %}">
+              <i class="las la-cart-arrow-down" width="40px" height="40px"></i>
+              <small>( {{ cart.products.count }} )</small>
+              <div>
+                  <h4>Savatchangiz</h4>
+              </div>
+          </a>
       </div>
-    </header>
+  </header>
 
 
     <main>
       <div class="cards">
         {% for category in categories %}
         <div class="card-single">
-          <div>
-            <h1>{{ category.count }}</h1>
-            <span>{{ category.name }}</span>
-          </div>
-          <div>
-            <span class="las la-users"></span>
-          </div>
+            <div>
+                <h1>{{ category.count }}</h1>
+                <span>{{ category.name }}</span>
+            </div>
+            <div>
+                
+                <span class="las la-sliders-h"></span>
+            </div>
         </div>
         {% endfor %}
 
         <div class="card-single">
-          <div>
-            <h1>$6k</h1>
-            <span>Income</span>
-          </div>
-          <div>
-            <span class="las la-google-wallet"></span>
-          </div>
+            <div>
+                <h1>0k</h1>
+                <span>Yetkazib berish</span>
+            </div>
+            <div>
+                <!-- <i class="las la-truck-loading"></i> -->
+                <span class="las la-truck"></span>
+            </div>
         </div>
-      </div>
+    </div>
       <br>
       <br>
       <br>
 
       {% block content %}
-      <h3 style="font-size: 30px; text-align:center; margin:10px; ">Sizning savatingiz {% if not cart.products.count %} bo`sh {% endif %}</h3>
+      <h3 style="font-size: 35px; text-align:center; margin:20px; color:#DD2F6E; font-weight: bold;">Sizning savatingiz!
+        {% if not cart.products.count %} bo`sh {% endif %}</h3>
       {% if messages %}
       {% for message in messages %}
       <div style="font-size: 17px; text-align:center; margin:10px; color: rgb(119, 224, 20);"
@@ -152,126 +183,103 @@
       {% endfor %}
       {% endif %}
       {% if cart.products.count %}
-      <!-- <table class="table">
-        <thead>
+
+      <div class="xarid">
+
+        {% for item in cart.products.all %}
+        <table>
           <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Rasm</th>
-            <th scope="col">Narx</th>
-            <th scope="col">Miqdor</th>
-            <th scope="col">Umumiy narx</th>
-            <th scope="col">Harakat</th>
+            <td rowspan="4">
+              <img src="{{ item.content_object.image.url }}"
+                style="display: inline-block; margin-left:50px; width:360px; height:360px;">
+            </td>
+            <td>
+              <p style="display: inline-block;
+                font-size: 3rem;
+                width:400px;
+                font-weight: 900;
+               ">
+                Nomi: {{ item.content_object.title }}
+              </p>
+            </td>
+            <td rowspan="3">
+              <a
+                href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button
+                  style="background-color: #DD2F6E;
+              border-radius: 25px;
+              color: #fff;
+              font-size: 2rem;
+              padding: 0.5rem 1rem;
+              border: 1px solid #DD2F6E;
+              font-weight: 500;
+              
+               cursor: pointer;
+              ">X</button></a>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {% for item in cart.products.all %}
           <tr>
-            <th scope="row">{{ item.content_object.title }}</th>
-            <td class="w-25"><img src="{{ item.content_object.image.url }}" class="img-fluid"></td>
-            <td>{{ item.content_object.price }} $.</td>
+
+            <td>
+              <p style="
+              font-size: 1.5rem;
+              font-weight: 400;">
+                Narxi: <span style="font-weight: 900; font-size: 2.6rem;">{{ item.content_object.price }} $.</span>
+              </p>
+            </td>
+
+          </tr>
+          <tr>
+
+            <td>
+              <p style="
+            color: gray;
+            font-size:1.2rem;">
+                Sizga qancha kerak?
+              </p>
+            </td>
+
+          </tr>
+          <tr>
+
             <td>
               <form
                 action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
                 method="POST">
                 {% csrf_token %}
-                <input type="number" class="form-control" name="qty" style="width: 70px;" min="1"
-                  value="{{ item.qty }}">
+
+                <input type="number" class="form-control" name="qty" style="width: 146px;
+                  border-radius: 19px;
+                  display: inline-block;
+                  outline: none;
+                  font-size: 20px;" min="1" value="{{ item.qty }}"> ta
                 <br>
-                <input type="submit" class="tugma" value="Miqdorni o'zgartirish">
+                <input type="submit" style="background-color: #DD2F6E;
+                border-radius: 25px;
+                color: #fff;
+                font-size: 1rem;
+                padding: 1.5rem 2rem;
+                border: 1px solid #DD2F6E;
+                font-weight: 500;
+                margin-top: 10px;" value="Miqdorni o'zgartirish">
               </form>
             </td>
-            <td>{{ item.final_price }} $.</td>
             <td>
-              <a
-                href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button
-                  class="tugma">Savatdan olib tashlang</button></a>
+              <p style="
+            font-size: 1.5rem;">
+                Umumiy Narx: <span style="font-weight: 900; font-size: 1.6rem;">{{ item.final_price }} $.</span></p>
             </td>
+
           </tr>
-          {% endfor %}
-          <tr>
-            <td colspan="2"></td>
-            <td>Jami:</td>
-            <td>{{ cart.total_products }}ta</td>
-            <td><strong>{{ cart.final_price }} $.</strong></td>
-            <td><a href="{% url 'checkout' %}"><button class="tugma">Kassaga boring</button></a></td>
-          </tr>
-        </tbody>
-      </table> -->
 
-      <div class="xarid">
-
-        {% for item in cart.products.all %}
-        <div class="card">
-          <img src="{{ item.content_object.image.url }}" style="display: inline-block; margin-left:50px; width:360px">
-          <p style="display: inline-block;
-              font-size: 3rem;
-              position: relative;
-              top: -290px;
-              font-weight: 900;
-              left: 120px;">
-            Nomi: {{ item.content_object.title }}
-          </p>
-
-          <p style="position: relative;
-          top: -252px;
-          left: 539px;
-          font-size: 1.5rem;
-          font-weight: 400;">
-            Narxi: <span style="font-weight: 900; font-size: 2.6rem;">{{ item.content_object.price }} $.</span>
-          </p>
-          <p style="position: relative;
-          top: -200px;
-          left: 538px;
-          color: gray;
-          font-size:1.2rem;">
-            Sizga qancha kerak?
-          </p>
-          <div class="miqdor" style="display: inline-block; position: relative; top: -180px; left:538px">
-            <form
-              action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"
-              method="POST">
-              {% csrf_token %}
-
-              <input type="number" class="form-control" name="qty" style="width: 146px;
-                border-radius: 19px;
-                padding: 13px 50px;
-                outline: none;
-                font-size: 20px;" min="1" value="{{ item.qty }}"> ta
-              <br>
-              <input type="submit" style="background-color: #DD2F6E;
-              border-radius: 25px;
-              color: #fff;
-              font-size: 1rem;
-              padding: 1.5rem 2rem;
-              border: 1px solid #DD2F6E;
-              font-weight: 500;
-              margin-top: 10px;" value="Miqdorni o'zgartirish">
-            </form>
-          </div>
-          <p style="display: inline-block;
-          position: relative;
-          top: -246px;
-          left: 555px;
-          font-size: 1.5rem;">
-            Umumiy Narx: <span style="font-weight: 900; font-size: 2.6rem;">{{ item.final_price }} $.</span></p>
-          <a
-            href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}"><button
-              style="background-color: #DD2F6E;
-            border-radius: 25px;
-            color: #fff;
-            font-size: 2rem;
-            padding: 0.5rem 1rem;
-            border: 1px solid #DD2F6E;
-            font-weight: 500;
-            position: relative;
-            top: -452px; cursor: pointer;
-            left: 520px;">X</button></a>
-        </div>
+        </table>
+        <br>
         {% endfor %}
+        <br>
+        <hr>
 
         <p style="display: inline-block; position: relative;
         top: 20px; font-size:1.5rem; text-align:center;
-        left: 520px;">Jami: {{ cart.total_products }}ta</p>
+        left: 520px;">Buyurtmangiz soni: {{ cart.total_products }}ta</p>
         <p style="display: inline-block; position: relative;
         top: 20px; font-size:1.5rem; text-align:center;
         left: 550px;">Umumiy narxi: {{ cart.final_price }} $.</p>
@@ -284,15 +292,17 @@
           border: 1px solid #DD2F6E;
           font-weight: 500; display: inline-block; position: relative;
           top: 66px; font-size:1.5rem; text-align:center; cursor: pointer;
-          left: 266px;">Kassaga boring</button></a>
+          left: 160px;">Kassaga boring</button></a>
 
-          <br>
-          <br>
-          <br>
-          <br>
-          <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
       </div>
+
+
 
       {% endif %}
       {% endblock content %}
